@@ -24,7 +24,8 @@ Script properties:
 If your server system: CentOS/Redhat (Do not enter "//" and "// subsequent sentence)
 ```bash
 yum -y install wget screen python   // For CentOS / Redhat
-wget http://mirrors.linuxeye.com/lnmp-full.tar.gz   // Contains the source code
+// wget http://mirrors.linuxeye.com/lnmp-full.tar.gz   // Contains the source code
+wget https://github.com/saifulcoder/lnmp/archive/master.zip //update by k3nz0
 tar xzf lnmp-full.tar.gz
 cd lnmp    // If you need to modify the directory (installation, data storage, Nginx logs), modify options.conf file
 screen -S lnmp    // if network interruption, you can execute the command `screen -r lnmp` reconnect install window
