@@ -38,11 +38,14 @@ mkdir -p $wwwroot_dir/default $wwwlogs_dir
 if [ -e "/etc/ssh/sshd_config" ]; then
   [ -z "`grep ^Port /etc/ssh/sshd_config`" ] && ssh_port=22 || ssh_port=`grep ^Port /etc/ssh/sshd_config | awk '{print $2}'`
   while :; do echo
-    read -p "Please input SSH port(Default: $ssh_port): " SSH_PORT
+    #k3nz0
+	#read -p "Please input SSH port(Default: $ssh_port): " SSH_PORT
+	read  SSH_PORT <<< "22"
+	
     [ -z "$SSH_PORT" ] && SSH_PORT=$ssh_port
     if [ $SSH_PORT -eq 22 >/dev/null 2>&1 -o $SSH_PORT -gt 1024 >/dev/null 2>&1 -a $SSH_PORT -lt 65535 >/dev/null 2>&1 ]; then
       break
-    else
+    else	
       echo "${CWARNING}input error! Input range: 22,1025~65534${CEND}"
     fi
   done
@@ -56,7 +59,11 @@ fi
 
 # check iptables
 while :; do echo
-  read -p "Do you want to enable iptables? [y/n]: " iptables_yn
+  
+  #read -p "Do you want to enable iptables? [y/n]: " iptables_yn 
+  read  iptables_yn <<< "y"
+  
+ 
   if [[ ! $iptables_yn =~ ^[y,n]$ ]]; then
     echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
   else
@@ -66,7 +73,10 @@ done
 
 # check Web server
 while :; do echo
-  read -p "Do you want to install Web server? [y/n]: " Web_yn
+  #read -p "Do you want to install Web server? [y/n]: " Web_yn
+
+  read  Web_yn <<< "y"
+  
   if [[ ! $Web_yn =~ ^[y,n]$ ]]; then
     echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
   else
@@ -78,7 +88,8 @@ while :; do echo
         echo -e "\t${CMSG}2${CEND}. Install Tengine"
         echo -e "\t${CMSG}3${CEND}. Install OpenResty"
         echo -e "\t${CMSG}4${CEND}. Do not install"
-        read -p "Please input a number:(Default 1 press Enter) " Nginx_version
+        #read -p "Please input a number:(Default 1 press Enter) " Nginx_version
+		read  Nginx_version <<< "1"
         [ -z "$Nginx_version" ] && Nginx_version=1
         if [[ ! $Nginx_version =~ ^[1-4]$ ]]; then
           echo "${CWARNING}input error! Please only input number 1,2,3,4${CEND}"
@@ -95,7 +106,9 @@ while :; do echo
         echo -e "\t${CMSG}1${CEND}. Install Apache-2.4"
         echo -e "\t${CMSG}2${CEND}. Install Apache-2.2"
         echo -e "\t${CMSG}3${CEND}. Do not install"
-        read -p "Please input a number:(Default 3 press Enter) " Apache_version
+        #read -p "Please input a number:(Default 3 press Enter) " Apache_version
+		read  Apache_version <<< "3"
+		
         [ -z "$Apache_version" ] && Apache_version=3
         if [[ ! $Apache_version =~ ^[1-3]$ ]]; then
           echo "${CWARNING}input error! Please only input number 1,2,3${CEND}"
@@ -168,7 +181,9 @@ done
 
 # choice database
 while :; do echo
-  read -p "Do you want to install Database? [y/n]: " DB_yn
+  #read -p "Do you want to install Database? [y/n]: " DB_yn
+  read  DB_yn <<< "y"
+  
   if [[ ! $DB_yn =~ ^[y,n]$ ]]; then
     echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
   else
@@ -187,7 +202,9 @@ while :; do echo
         echo -e "\t${CMSG} 9${CEND}. Install Percona-5.6"
         echo -e "\t${CMSG}10${CEND}. Install Percona-5.5"
         echo -e "\t${CMSG}11${CEND}. Install AliSQL-5.6"
-        read -p "Please input a number:(Default 2 press Enter) " DB_version
+        #read -p "Please input a number:(Default 2 press Enter) " DB_version
+		read  DB_version <<< "2"
+		
         [ -z "$DB_version" ] && DB_version=2
         if [ ${DB_version} -ge 1 >/dev/null 2>&1 -a ${DB_version} -le 11 >/dev/null 2>&1 ]; then
           while :; do
@@ -201,7 +218,9 @@ while :; do echo
               echo "Please choose installation of the database:"
               echo -e "\t${CMSG}1${CEND}. Install database from binary package."
               echo -e "\t${CMSG}2${CEND}. Install database from source package."
-              read -p "Please input a number:(Default 1 press Enter) " dbInstallMethods
+              #read -p "Please input a number:(Default 1 press Enter) " dbInstallMethods
+			  read  dbInstallMethods <<< "1"
+			  
               [ -z "$dbInstallMethods" ] && dbInstallMethods=1
               if [[ ! $dbInstallMethods =~ ^[1-2]$ ]]; then
                 echo "${CWARNING}input error! Please only input number 1,2${CEND}"
@@ -222,7 +241,11 @@ done
 
 # check PHP
 while :; do echo
-  read -p "Do you want to install PHP? [y/n]: " PHP_yn
+  #read -p "Do you want to install PHP? [y/n]: " PHP_yn
+
+  
+  read  PHP_yn <<< "y"
+  
   if [[ ! $PHP_yn =~ ^[y,n]$ ]]; then
     echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
   else
@@ -236,14 +259,19 @@ while :; do echo
         echo -e "\t${CMSG}4${CEND}. Install php-5.6"
         echo -e "\t${CMSG}5${CEND}. Install php-7.0"
         echo -e "\t${CMSG}6${CEND}. Install php-7.1"
-        read -p "Please input a number:(Default 4 press Enter) " PHP_version
+        #read -p "Please input a number:(Default 4 press Enter) " PHP_version
+		$PHP_version = 4
         [ -z "$PHP_version" ] && PHP_version=4
         if [[ ! $PHP_version =~ ^[1-6]$ ]]; then
           echo "${CWARNING}input error! Please only input number 1,2,3,4,5,6${CEND}"
         else
           while :; do echo
-            read -p "Do you want to install opcode cache of the PHP? [y/n]: " PHP_cache_yn
-            if [[ ! $PHP_cache_yn =~ ^[y,n]$ ]]; then
+            #read -p "Do you want to install opcode cache of the PHP? [y/n]: " PHP_cache_yn
+
+			read  PHP_cache_yn <<< "y"
+			
+			
+			if [[ ! $PHP_cache_yn =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
             else
               if [ "$PHP_cache_yn" == 'y' ]; then
@@ -254,8 +282,11 @@ while :; do echo
                     echo -e "\t${CMSG}2${CEND}. Install XCache"
                     echo -e "\t${CMSG}3${CEND}. Install APCU"
                     echo -e "\t${CMSG}4${CEND}. Install eAccelerator-0.9"
-                    read -p "Please input a number:(Default 1 press Enter) " PHP_cache
-                    [ -z "$PHP_cache" ] && PHP_cache=1
+                    #read -p "Please input a number:(Default 1 press Enter) " PHP_cache
+
+                    read  PHP_cache <<< "y"
+					
+					[ -z "$PHP_cache" ] && PHP_cache=1
                     if [[ ! $PHP_cache =~ ^[1-4]$ ]]; then
                       echo "${CWARNING}input error! Please only input number 1,2,3,4${CEND}"
                     else
@@ -271,6 +302,8 @@ while :; do echo
                     echo -e "\t${CMSG}3${CEND}. Install APCU"
                     echo -e "\t${CMSG}4${CEND}. Install eAccelerator-1.0-dev"
                     read -p "Please input a number:(Default 1 press Enter) " PHP_cache
+					
+					
                     [ -z "$PHP_cache" ] && PHP_cache=1
                     if [[ ! $PHP_cache =~ ^[1-4]$ ]]; then
                       echo "${CWARNING}input error! Please only input number 1,2,3,4${CEND}"
@@ -300,7 +333,10 @@ while :; do echo
                     echo -e "\t${CMSG}1${CEND}. Install Zend OPcache"
                     echo -e "\t${CMSG}2${CEND}. Install XCache"
                     echo -e "\t${CMSG}3${CEND}. Install APCU"
-                    read -p "Please input a number:(Default 1 press Enter) " PHP_cache
+                    #read -p "Please input a number:(Default 1 press Enter) " PHP_cache
+
+					read  PHP_cache <<< "1"
+					PHP_cache
                     [ -z "$PHP_cache" ] && PHP_cache=1
                     if [[ ! $PHP_cache =~ ^[1-3]$ ]]; then
                       echo "${CWARNING}input error! Please only input number 1,2,3${CEND}"
@@ -347,7 +383,10 @@ while :; do echo
           # ionCube
           if [ "${TARGET_ARCH}" != "arm64" ]; then
             while :; do echo
-              read -p "Do you want to install ionCube? [y/n]: " ionCube_yn
+              #read -p "Do you want to install ionCube? [y/n]: " ionCube_yn
+
+			  read  ionCube_yn <<< "y"
+			  
               if [[ ! $ionCube_yn =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
               else
@@ -358,7 +397,10 @@ while :; do echo
 
           # ImageMagick or GraphicsMagick
           while :; do echo
-            read -p "Do you want to install ImageMagick or GraphicsMagick? [y/n]: " Magick_yn
+            #read -p "Do you want to install ImageMagick or GraphicsMagick? [y/n]: " Magick_yn
+			read  Magick_yn <<< "n"
+			
+			
             if [[ ! $Magick_yn =~ ^[y,n]$ ]]; then
               echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
             else
@@ -390,7 +432,10 @@ done
 
 # check Pureftpd
 while :; do echo
-  read -p "Do you want to install Pure-FTPd? [y/n]: " FTP_yn
+  #read -p "Do you want to install Pure-FTPd? [y/n]: " FTP_yn
+
+  read  FTP_yn <<< "n"
+  
   if [[ ! $FTP_yn =~ ^[y,n]$ ]]; then
     echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
   else
@@ -402,7 +447,10 @@ done
 # check phpMyAdmin
 if [[ $PHP_version =~ ^[1-6]$ ]] || [ -e "$php_install_dir/bin/phpize" ]; then
   while :; do echo
-    read -p "Do you want to install phpMyAdmin? [y/n]: " phpMyAdmin_yn
+    #read -p "Do you want to install phpMyAdmin? [y/n]: " phpMyAdmin_yn
+
+	read  phpMyAdmin_yn <<< "y"
+	
     if [[ ! $phpMyAdmin_yn =~ ^[y,n]$ ]]; then
       echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
     else
@@ -414,7 +462,10 @@ fi
 
 # check redis
 while :; do echo
-  read -p "Do you want to install redis? [y/n]: " redis_yn
+  #read -p "Do you want to install redis? [y/n]: " redis_yn
+
+  read  redis_yn <<< "y"
+  
   if [[ ! $redis_yn =~ ^[y,n]$ ]]; then
     echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
   else
@@ -424,7 +475,10 @@ done
 
 # check memcached
 while :; do echo
-  read -p "Do you want to install memcached? [y/n]: " memcached_yn
+  #read -p "Do you want to install memcached? [y/n]: " memcached_yn
+
+  read  memcached_yn <<< "y"
+  
   if [[ ! $memcached_yn =~ ^[y,n]$ ]]; then
     echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
   else
@@ -433,7 +487,10 @@ while :; do echo
 done
 
 while :; do echo
-  read -p "Do you want to install HHVM? [y/n]: " HHVM_yn
+  #read -p "Do you want to install HHVM? [y/n]: " HHVM_yn
+
+  read  HHVM_yn <<< "n"
+  
   if [[ ! $HHVM_yn =~ ^[y,n]$ ]]; then
     echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
   else
